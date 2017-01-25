@@ -103,6 +103,13 @@ public:
   static void
   InstallAll(const Name& namePrefix);
 
+  /**
+   * @brief Get the strategy instance by name
+   */
+  template<class Strategy>
+  static Strategy*
+  GetStrategy(Ptr<Node> node, const Name& strategyName);
+
 private:
   static void
   sendCommand(const ControlParameters& parameters, Ptr<Node> node);
@@ -141,6 +148,23 @@ StrategyChoiceHelper::InstallAll(const Name& namePrefix)
 {
   Install<Strategy>(NodeContainer::GetGlobal(), namePrefix);
 }
+
+// new helper interface to get the specific node's strategy
+template<class Strategy>
+inline Strategy*
+StrategyChoiceHelper::GetStrategy(Ptr<Node> node, const Name& strategyName)
+{
+  Ptr<L3Protocol> l3Protocol = node->GetObject<L3Protocol>();
+  NS_ASSERT(l3Protocol != nullptr);
+  NS_ASSERT(l3Protocol->getForwarder() != nullptr);
+
+  nfd::Forwarder& forwarder = *l3Protocol->getForwarder();
+  nfd::StrategyChoice& strategyChoice = forwarder.getStrategyChoice();
+  Strategy* strategy = strategyChoice.getStrategy(strategyName);
+  return strategy;
+
+}
+
 
 } // namespace ndn
 } // namespace ns3
