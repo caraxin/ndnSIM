@@ -151,6 +151,39 @@ StackHelper::setPolicy(const std::string& policy)
   }
 }
 
+void
+StackHelper::setGeoTag(uint32_t geoTag, Ptr<Node> node)
+{
+  Ptr<L3Protocol> l3Protocol = node->GetObject<L3Protocol>();
+  NS_ASSERT(l3Protocol != nullptr);
+  NS_ASSERT(l3Protocol->getForwarder() != nullptr);
+
+  nfd::Forwarder& forwarder = *l3Protocol->getForwarder();
+  forwarder.setGeoTag(geoTag);
+}
+
+void
+StackHelper::setInfoNum(double infoNum, Ptr<Node> node) {
+  Ptr<L3Protocol> l3Protocol = node->GetObject<L3Protocol>();
+  NS_ASSERT(l3Protocol != nullptr);
+  NS_ASSERT(l3Protocol->getForwarder() != nullptr);
+
+  nfd::Forwarder& forwarder = *l3Protocol->getForwarder();
+  forwarder.setInfoNum(infoNum);
+}
+
+void
+StackHelper::setTimelineStart(ndn::time::steady_clock::TimePoint& timelineStart,
+                              Ptr<Node> node)
+{
+  Ptr<L3Protocol> l3Protocol = node->GetObject<L3Protocol>();
+  NS_ASSERT(l3Protocol != nullptr);
+  NS_ASSERT(l3Protocol->getForwarder() != nullptr);
+
+  nfd::Forwarder& forwarder = *l3Protocol->getForwarder();
+  forwarder.timelineStart(timelineStart);
+}
+
 Ptr<FaceContainer>
 StackHelper::Install(const NodeContainer& c) const
 {
@@ -394,6 +427,7 @@ StackHelper::createAndRegisterFace(Ptr<Node> node, Ptr<L3Protocol> ndn, Ptr<NetD
   if (face == 0) {
     face = DefaultNetDeviceCallback(node, ndn, device);
   }
+  NS_LOG_DEBUG("Add FACE=" << face->getLocalUri() << " for DEVICE=" << device->GetInstanceTypeId());
 
   if (m_needSetDefaultRoutes) {
     // default route with lowest priority possible

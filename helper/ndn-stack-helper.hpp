@@ -229,6 +229,16 @@ public:
   void
   disableRibManager();
 
+  static void
+  setGeoTag(uint32_t geoTag, Ptr<Node> node);
+
+  static void
+  setInfoNum(double infoNum, Ptr<Node> node);
+
+  static void
+  setTimelineStart(ndn::time::steady_clock::TimePoint& timelineStart,
+                   Ptr<Node> node);
+
   // Cannot be disabled for now
   // /**
   //  * \brief Disable Face Manager

@@ -150,7 +150,7 @@ StrategyChoiceHelper::InstallAll(const Name& namePrefix)
 }
 
 // new helper interface to get the specific node's strategy
-template<class Strategy>
+/*template<class Strategy>
 inline Strategy*
 StrategyChoiceHelper::GetStrategy(Ptr<Node> node, const Name& strategyName)
 {
@@ -162,9 +162,7 @@ StrategyChoiceHelper::GetStrategy(Ptr<Node> node, const Name& strategyName)
   nfd::StrategyChoice& strategyChoice = forwarder.getStrategyChoice();
   Strategy* strategy = strategyChoice.getStrategy(strategyName);
   return strategy;
-
-}
-
+}*/
 
 } // namespace ndn
 } // namespace ns3
